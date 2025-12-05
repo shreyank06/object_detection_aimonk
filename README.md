@@ -4,6 +4,20 @@ A production-ready microservice architecture for real-time object detection usin
 
 ## Quick Start (30 seconds)
 
+if docker not installed
+```
+sudo apt update
+sudo apt install docker-compose-plugin
+```
+If you have old docker deployment
+```
+docker-compose down
+```
+Then run with:
+```
+docker compose up
+```
+
 ```bash
 chmod +x start.sh
 ./start.sh
@@ -47,7 +61,6 @@ curl -X POST -F "image=@your_image.jpg" http://localhost:5000/api/detect
 ## Table of Contents
 
 - [Overview](#overview)
-- [Architecture](#architecture)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [API Usage](#api-usage)
@@ -79,85 +92,6 @@ This solution provides a complete microservice-based object detection system wit
 ✅ Health monitoring
 ✅ Error handling
 ✅ CORS support
-
----
-
-## Architecture
-
-### System Components
-
-```
-User/Browser
-    ↓
-Frontend (React/HTML) - Port 3000
-├─ Image upload form
-├─ Drag & drop support
-├─ Real-time results display
-└─ Bounding box visualization
-    ↓
-UI Backend (Flask) - Port 5000
-├─ POST /api/detect (image upload)
-├─ GET /api/status/<id> (result retrieval)
-└─ GET /health (health check)
-    ↓
-AI Backend (Flask) - Port 5001
-├─ YOLOv3 Model (80 COCO classes)
-├─ Image preprocessing
-├─ Bounding box visualization
-└─ JSON result generation
-```
-
-### Frontend Service
-
-- **Technology**: HTML5, CSS3, Vanilla JavaScript
-- **Port**: 3000
-- **Features**:
-  - Drag and drop image upload
-  - Real-time image preview
-  - Beautiful UI with gradients
-  - Detection results display
-  - Bounding box visualization
-  - Confidence score indicators
-  - Responsive design (mobile-friendly)
-  - API connectivity status
-
-### UI Backend Service
-
-- **Framework**: Flask with Flask-CORS
-- **Port**: 5000
-- **Responsibilities**:
-  - Accepts image uploads via REST API
-  - Routes requests to AI backend
-  - Manages request tracking with unique UUIDs
-  - Stores detection results and metadata
-  - Provides status query endpoints
-  - File management (uploads and outputs)
-
-**Endpoints**:
-- `GET /health` - Service health check
-- `POST /api/detect` - Submit image for detection
-- `GET /api/status/<request_id>` - Retrieve results
-
-### AI Backend Service
-
-- **Framework**: Flask with OpenCV-Python
-- **Port**: 5001
-- **Model**: YOLOv3 (You Only Look Once v3)
-- **Responsibilities**:
-  - Loads and manages YOLOv3 model
-  - Performs object detection inference
-  - Draws bounding boxes on detected objects
-  - Returns structured detection data
-
-**Key Features**:
-- CPU-compatible (no GPU required)
-- Lazy model loading (loads once on first request)
-- Non-Maximum Suppression (NMS) for duplicate detection filtering
-- Configurable confidence threshold (default: 0.5)
-
-**Endpoints**:
-- `GET /health` - Service health check
-- `POST /api/detect` - Perform object detection
 
 ---
 
