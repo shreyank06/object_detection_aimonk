@@ -20,10 +20,10 @@ docker-compose up --build -d
 ```
 Open
 ```
-<http://localhost:3000>
-```
+[http://localhost:3000](http://localhost:3000)
 ```
 ## Services
+```
 
 | Service | Port | Purpose |
 |---------|------|---------|
