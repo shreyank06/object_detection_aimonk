@@ -30,12 +30,11 @@ Log out and log back in after running these commands.
 # Navigate to project
 cd ai-monk-technical-test
 
-# Check if required ports are available (3000, 5000, 5001)
-# Check if required ports are available (3000, 5000, 5001)
+# Check if required ports are available and kill if in use (3000, 5000, 5001)
 for port in 3000 5000 5001; do
   if lsof -i:$port >/dev/null 2>&1; then
-    echo "Port $port is in use. Free it before proceeding."
-    lsof -i:$port
+    echo "Port $port is in use. Killing process..."
+    sudo lsof -ti:$port | xargs -r kill -9
   fi
 done
 
