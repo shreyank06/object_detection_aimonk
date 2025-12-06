@@ -4,72 +4,107 @@ A microservice for real-time object detection using YOLOv3.
 
 ---
 
-## Docker Deployment
+## Quick Start
 
-### Prerequisites
-- Docker and Docker Compose installed on your machine
+```bash
+# 1. Clone and navigate to project
+cd ai-monk-technical-test
 
-### Step 1: Install Docker (Skip if already installed)
+# 2. Stop any existing containers and free up ports
+docker compose down 2>/dev/null; docker rm -f frontend ui-backend ai-backend 2>/dev/null
+
+# 3. Build and run
+docker compose up --build -d
+
+# 4. Wait for services to be ready (about 30 seconds)
+echo "Waiting for services..." && sleep 10
+
+# 5. Open in browser
+echo "Open http://localhost:3000"
+```
+
+---
+
+## Prerequisites
+
+- Docker Engine 20.10+
+- Docker Compose V2
+
+### Install Docker
 
 **Ubuntu/Debian:**
 ```bash
 sudo apt update
 sudo apt install -y docker.io docker-compose-plugin
-sudo systemctl start docker
-sudo systemctl enable docker
+sudo systemctl start docker && sudo systemctl enable docker
 sudo usermod -aG docker $USER
+# Log out and log back in after this
 ```
-*Log out and log back in after running the above commands.*
 
-**Mac:** Download and install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+**Mac/Windows:** Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-**Windows:** Download and install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+---
 
-### Step 2: Navigate to Project
+## Deployment
+
+### Start Application
 ```bash
-cd ai-monk-technical-test
+docker compose up --build -d
 ```
+First build takes a few minutes to download the YOLOv3 model.
 
-### Step 3: Build and Run
+### Verify Services are Running
 ```bash
-docker compose up --build
+docker compose ps
 ```
+All 3 services should show "Up" status.
 
-Wait for the build to complete (first time takes a few minutes to download YOLOv3 model).
+### Access Application
+Open **http://localhost:3000** in your browser.
 
-### Step 4: Access the Application
-
-Open your browser and go to: **http://localhost:3000**
-
-### Stop the Application
+### Stop Application
 ```bash
 docker compose down
 ```
 
-### Quick Reference Commands
-```bash
-# Start services (background mode)
-docker compose up -d
+---
 
-# View logs
+## Troubleshooting
+
+### Port Already in Use
+If you get "port already in use" error:
+```bash
+# Find and kill process on port 3000
+sudo lsof -ti:3000 | xargs -r kill -9
+
+# Or stop all containers and retry
+docker compose down
+docker rm -f $(docker ps -aq) 2>/dev/null
+docker compose up --build -d
+```
+
+### Clean Restart
+For a completely fresh start:
+```bash
+docker compose down --rmi all --volumes
+docker compose up --build -d
+```
+
+### View Logs
+```bash
+# All services
 docker compose logs -f
 
-# Check running containers
-docker compose ps
-
-# Restart services
-docker compose restart
-
-# Full cleanup (removes images too)
-docker compose down --rmi all
+# Specific service
+docker compose logs -f ai-backend
 ```
 
 ---
 
 ## Service URLs
 
-| Service | URL |
-|---------|-----|
-| Frontend | http://localhost:3000 |
-| UI Backend | http://localhost:5000 |
-| AI Backend | http://localhost:5001 |
+| Service | URL | Description |
+|---------|-----|-------------|
+| Frontend | http://localhost:3000 | Web UI |
+| UI Backend | http://localhost:5000 | API Gateway |
+| AI Backend | http://localhost:5001 | YOLO Detection |
