@@ -37,7 +37,6 @@ models/yolov3.cfg
 models/coco.names
 
 # Outputs
-outputs/
 uploads/
 test_results/
 test_image.jpg
