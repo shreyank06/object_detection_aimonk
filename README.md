@@ -1,89 +1,51 @@
 # Object Detection Microservice
 
-A microservice for real-time object detection using YOLOv3.
+Real-time object detection using YOLOv3.
 
----
-
-## Prerequisites
-
-- Docker Engine 20.10+
-- Docker Compose V2
-
-**Ubuntu/Debian:**
-```bash
-sudo apt update
-sudo apt install -y docker.io docker-compose
-sudo systemctl start docker && sudo systemctl enable docker
-sudo usermod -aG docker $USER
-```
-Log out and log back in after running these commands.
-
-> **Note:** The `docker.io` package uses `docker-compose` (hyphenated) instead of `docker compose`. All commands below use the hyphenated syntax for compatibility.
-
-**Mac/Windows:** Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-
----
-
-## Deployment
+## Quick Start
 
 ```bash
-# Navigate to project
-cd ai-monk-technical-test
-
-# Check if required ports are available and kill if in use (3000, 5000, 5001)
-for port in 3000 5000 5001; do
-  if lsof -i:$port >/dev/null 2>&1; then
-    echo "Port $port is in use. Killing process..."
-    sudo lsof -ti:$port | xargs -r kill -9
-  fi
-done
-
 # Build and run
 docker-compose up --build -d
 
-# Verify all services are running
-docker-compose ps
+# Open in browser
+# http://localhost:3000
 ```
 
-First build takes a few minutes to download the YOLOv3 model.
+## Services
 
-**Access Application:** http://localhost:3000
+| Service | Port | Purpose |
+|---------|------|---------|
+| Frontend | 3000 | Web UI |
+| UI Backend | 5000 | REST API |
+| AI Backend | 5001 | YOLOv3 inference |
 
-**Stop Application:**
+## Usage
+
+1. Open http://localhost:3000
+2. Upload an image (drag & drop or click)
+3. Click "Detect Objects"
+4. View results with bounding boxes
+
+## Commands
+
 ```bash
+# View logs
+docker-compose logs -f
+
+# Stop
 docker-compose down
-```
 
----
-
-## Troubleshooting
-
-**Port already in use:**
-```bash
-# Kill processes on all required ports
-for port in 3000 5000 5001; do
-  sudo lsof -ti:$port | xargs -r kill -9
-done
-docker-compose up --build -d
-```
-
-**Clean restart:**
-```bash
+# Clean restart
 docker-compose down --rmi all --volumes
 docker-compose up --build -d
 ```
 
-**View logs:**
+## Troubleshooting
+
+**Port in use:**
 ```bash
-docker-compose logs -f
+for port in 3000 5000 5001; do
+  sudo lsof -ti:$port | xargs -r kill -9
+done
 ```
-
----
-
-## Service URLs
-
-| Service | URL |
-|---------|-----|
-| Frontend | http://localhost:3000 |
-| UI Backend | http://localhost:5000 |
-| AI Backend | http://localhost:5001 |
