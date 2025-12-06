@@ -36,10 +36,10 @@ Open
 2. Upload an image (drag & drop or click)
 3. Click "Detect Objects"
 4. View results with bounding boxes
-
+```
 ## Commands
 
-```bash
+```
 docker-compose logs -f          # View logs
 docker-compose down             # Stop
 docker-compose down --rmi all --volumes && docker-compose up --build -d  # Clean restart
