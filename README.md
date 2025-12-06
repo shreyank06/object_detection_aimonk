@@ -19,9 +19,8 @@ sudo usermod -aG docker $USER  # Log out and back in after this
 docker-compose up --build -d
 ```
 Open
-```
+
 [http://localhost:3000](http://localhost:3000)
-```
 ## Services
 ```
 
