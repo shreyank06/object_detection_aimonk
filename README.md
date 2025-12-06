@@ -31,6 +31,7 @@ Log out and log back in after running these commands.
 cd ai-monk-technical-test
 
 # Check if required ports are available (3000, 5000, 5001)
+# Check if required ports are available (3000, 5000, 5001)
 for port in 3000 5000 5001; do
   if lsof -i:$port >/dev/null 2>&1; then
     echo "Port $port is in use. Free it before proceeding."
