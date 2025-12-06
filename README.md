@@ -30,6 +30,14 @@ Log out and log back in after running these commands.
 # Navigate to project
 cd ai-monk-technical-test
 
+# Check if required ports are available (3000, 5000, 5001)
+for port in 3000 5000 5001; do
+  if lsof -i:$port >/dev/null 2>&1; then
+    echo "Port $port is in use. Free it before proceeding."
+    lsof -i:$port
+  fi
+done
+
 # Build and run
 docker-compose up --build -d
 
@@ -52,7 +60,10 @@ docker-compose down
 
 **Port already in use:**
 ```bash
-sudo lsof -ti:3000 | xargs -r kill -9
+# Kill processes on all required ports
+for port in 3000 5000 5001; do
+  sudo lsof -ti:$port | xargs -r kill -9
+done
 docker-compose up --build -d
 ```
 
